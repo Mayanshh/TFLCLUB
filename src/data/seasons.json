@@ -1,0 +1,46 @@
+{
+  "upcoming": [
+    {
+      "id": 1,
+      "season": "5",
+      "location": "Manali",
+      "status": "Upcoming",
+      "price": "₹45,000",
+      "perk": "Includes 50K funded account worth $300 for every participant"
+    },
+    {
+      "id": 2,
+      "season": "6",
+      "location": "Leh Ladakh",
+      "status": "Planned",
+      "price": "₹55,000",
+      "perk": "Advanced Price Action masterclass with live market execution"
+    },
+    {
+      "id": 3,
+      "season": "7",
+      "location": "Bangalore",
+      "status": "Registration Open",
+      "price": "₹40,000",
+      "perk": "Lifetime access to the TFL Alpha community terminal"
+    }
+  ],
+  "past": [
+    {
+      "id": 101,
+      "season": "4",
+      "location": "Dubai",
+      "status": "Completed",
+      "price": "Sold Out",
+      "perk": "Institutional Order Flow deep dive at the DIFC hub."
+    },
+    {
+      "id": 102,
+      "season": "3",
+      "location": "Goa",
+      "status": "Completed",
+      "price": "Sold Out",
+      "perk": "Psychology & Risk Management intensive beach retreat."
+    }
+  ]
+}
