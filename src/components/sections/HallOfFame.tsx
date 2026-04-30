@@ -51,7 +51,7 @@ export default function HallOfFame() {
         <CircularGallery
           items={data.slides.map((slide) => ({
             image: slide.img,
-            text: slide.text,
+            text: `${slide.account} \n ${slide.text}`,
           }))}
           bend={1}
           textColor="#ffffff"

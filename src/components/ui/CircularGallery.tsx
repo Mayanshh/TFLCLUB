@@ -32,31 +32,46 @@ function getFontSize(font: string): number {
 function createTextTexture(
   gl: GL,
   text: string,
+  subText: string = '',
   font: string = '30px sans-serif',
-  color: string = 'black'
+  mainColor: string = '#000000'
 ): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
   if (!context) throw new Error('Could not get 2d context');
 
-  context.font = font;
-  const metrics = context.measureText(text);
-  const textWidth = Math.ceil(metrics.width);
-  const fontSize = getFontSize(font);
-  const textHeight = Math.ceil(fontSize * 1.2);
+  const mainFontSize = getFontSize(font);
+  const subFontSize = Math.floor(mainFontSize * 0.6);
 
-  canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  context.font = `${mainFontSize}px sans-serif`;
+  const mainWidth = context.measureText(text).width;
 
-  context.font = font;
-  context.fillStyle = color;
-  context.textBaseline = 'middle';
-  context.textAlign = 'center';
+  context.font = `${subFontSize}px sans-serif`;
+  const subWidth = context.measureText(subText).width;
+
+  const width = Math.ceil(Math.max(mainWidth, subWidth));
+  const height = Math.ceil(mainFontSize + subFontSize * 1.4);
+
+  canvas.width = width + 20;
+  canvas.height = height + 20;
+
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillText(text, canvas.width / 2, canvas.height / 2);
+  context.textAlign = 'center';
+  context.textBaseline = 'top';
+
+  // main text
+  context.font = `bold ${mainFontSize}px sans-serif`;
+  context.fillStyle = '#000000';
+  context.fillText(text, canvas.width / 2, 10);
+
+  // sub text
+  context.font = `bold ${subFontSize}px sans-serif`;
+  context.fillStyle = '#000000';
+  context.fillText(subText, canvas.width / 2, 10 + mainFontSize + 4);
 
   const texture = new Texture(gl, { generateMipmaps: false });
   texture.image = canvas;
+
   return { texture, width: canvas.width, height: canvas.height };
 }
 
@@ -65,6 +80,7 @@ interface TitleProps {
   plane: Mesh;
   renderer: Renderer;
   text: string;
+  subText?: string;
   textColor?: string;
   font?: string;
 }
@@ -74,24 +90,34 @@ class Title {
   plane: Mesh;
   renderer: Renderer;
   text: string;
+  subText: string;
   textColor: string;
   font: string;
   mesh!: Mesh;
 
-  constructor({ gl, plane, renderer, text, textColor = '#545050', font = '30px sans-serif' }: TitleProps) {
+  constructor({ gl, plane, renderer, textColor = '#000000', text, subText = '', font = '30px sans-serif' }: TitleProps) {
     autoBind(this);
     this.gl = gl;
     this.plane = plane;
     this.renderer = renderer;
     this.text = text;
+    this.subText = subText;
     this.textColor = textColor;
     this.font = font;
     this.createMesh();
   }
 
   createMesh() {
-    const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+    const { texture, width, height } = createTextTexture(
+      this.gl,
+      this.text,
+      this.subText,
+      this.font,
+      this.textColor
+    );
+
     const geometry = new Plane(this.gl);
+
     const program = new Program(this.gl, {
       vertex: `
         attribute vec3 position;
@@ -114,13 +140,18 @@ class Title {
           gl_FragColor = color;
         }
       `,
-      uniforms: { tMap: { value: texture } },
+      uniforms: {
+        tMap: { value: texture }
+      },
       transparent: true
     });
+
     this.mesh = new Mesh(this.gl, { geometry, program });
+
     const aspect = width / height;
     const textHeightScaled = this.plane.scale.y * 0.15;
     const textWidthScaled = textHeightScaled * aspect;
+
     this.mesh.scale.set(textWidthScaled, textHeightScaled, 1);
     this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeightScaled * 0.5 - 0.05;
     this.mesh.setParent(this.plane);
@@ -147,6 +178,7 @@ interface MediaProps {
   scene: Transform;
   screen: ScreenSize;
   text: string;
+  subText?: string;
   viewport: Viewport;
   bend: number;
   textColor: string;
@@ -165,6 +197,7 @@ class Media {
   scene: Transform;
   screen: ScreenSize;
   text: string;
+  subText: string;
   viewport: Viewport;
   bend: number;
   textColor: string;
@@ -192,6 +225,7 @@ class Media {
     scene,
     screen,
     text,
+    subText = '',
     viewport,
     bend,
     textColor,
@@ -207,6 +241,7 @@ class Media {
     this.scene = scene;
     this.screen = screen;
     this.text = text;
+    this.subText = subText;
     this.viewport = viewport;
     this.bend = bend;
     this.textColor = textColor;
@@ -219,9 +254,7 @@ class Media {
   }
 
   createShader() {
-    const texture = new Texture(this.gl, {
-      generateMipmaps: true
-    });
+    const texture = new Texture(this.gl, { generateMipmaps: true });
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -264,13 +297,9 @@ class Media {
             vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
           );
           vec4 color = texture2D(tMap, uv);
-          
           float d = roundedBoxSDF(vUv - 0.5, vec2(0.5 - uBorderRadius), uBorderRadius);
-          
-          // Smooth antialiasing for edges
           float edgeSmooth = 0.002;
           float alpha = 1.0 - smoothstep(-edgeSmooth, edgeSmooth, d);
-          
           gl_FragColor = vec4(color.rgb, alpha);
         }
       `,
@@ -307,6 +336,7 @@ class Media {
       plane: this.plane,
       renderer: this.renderer,
       text: this.text,
+      subText: this.subText,
       textColor: this.textColor,
       font: this.font
     });
@@ -325,7 +355,6 @@ class Media {
       const B_abs = Math.abs(this.bend);
       const R = (H * H + B_abs * B_abs) / (2 * B_abs);
       const effectiveX = Math.min(Math.abs(x), H);
-
       const arc = R - Math.sqrt(R * R - effectiveX * effectiveX);
       if (this.bend > 0) {
         this.plane.position.y = -arc;
@@ -374,7 +403,7 @@ class Media {
 }
 
 interface AppConfig {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; subText?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
@@ -400,7 +429,7 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image: string; text: string }[] = [];
+  mediasImages: { image: string; text: string; subText?: string }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
@@ -419,7 +448,7 @@ class App {
     {
       items,
       bend = 1,
-      textColor = '#ffffff',
+      textColor = '#000000',
       borderRadius = 0,
       font = '30px sans-serif',
       scrollSpeed = 2,
@@ -470,61 +499,25 @@ class App {
   }
 
   createMedias(
-    items: { image: string; text: string }[] | undefined,
+    items: { image: string; text: string; subText?: string }[] | undefined,
     bend: number = 1,
     textColor: string,
     borderRadius: number,
     font: string
   ) {
     const defaultItems = [
-      {
-        image: `https://picsum.photos/seed/1/800/600?grayscale`,
-        text: 'Bridge'
-      },
-      {
-        image: `https://picsum.photos/seed/2/800/600?grayscale`,
-        text: 'Desk Setup'
-      },
-      {
-        image: `https://picsum.photos/seed/3/800/600?grayscale`,
-        text: 'Waterfall'
-      },
-      {
-        image: `https://picsum.photos/seed/4/800/600?grayscale`,
-        text: 'Strawberries'
-      },
-      {
-        image: `https://picsum.photos/seed/5/800/600?grayscale`,
-        text: 'Deep Diving'
-      },
-      {
-        image: `https://picsum.photos/seed/16/800/600?grayscale`,
-        text: 'Train Track'
-      },
-      {
-        image: `https://picsum.photos/seed/17/800/600?grayscale`,
-        text: 'Santorini'
-      },
-      {
-        image: `https://picsum.photos/seed/8/800/600?grayscale`,
-        text: 'Blurry Lights'
-      },
-      {
-        image: `https://picsum.photos/seed/9/800/600?grayscale`,
-        text: 'New York'
-      },
-      {
-        image: `https://picsum.photos/seed/10/800/600?grayscale`,
-        text: 'Good Boy'
-      },
-      {
-        image: `https://picsum.photos/seed/21/800/600?grayscale`,
-        text: 'Coastline'
-      },
-      {
-        image: `https://picsum.photos/seed/12/800/600?grayscale`,
-        text: 'Palm Trees'
-      }
+      { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge', subText: 'Architecture' },
+      { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup', subText: 'Interior' },
+      { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall', subText: 'Nature' },
+      { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries', subText: 'Food' },
+      { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving', subText: 'Ocean' },
+      { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track', subText: 'Travel' },
+      { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini', subText: 'Greece' },
+      { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights', subText: 'Night Life' },
+      { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York', subText: 'Urban' },
+      { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy', subText: 'Pets' },
+      { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline', subText: 'Seascape' },
+      { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees', subText: 'Tropical' }
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
@@ -539,6 +532,7 @@ class App {
         scene: this.scene,
         screen: this.screen,
         text: data.text,
+        subText: data.subText ?? '',
         viewport: this.viewport,
         bend,
         textColor,
@@ -645,7 +639,7 @@ class App {
 }
 
 interface CircularGalleryProps {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; subText?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
