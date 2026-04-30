@@ -1,10 +1,6 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-// Register plugins early
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, useGSAP);
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
-
-export { gsap, ScrollTrigger, useGSAP };

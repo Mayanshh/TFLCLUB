@@ -1,185 +1,140 @@
-"use client";
+'use client';
 
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { Trophy, ShieldCheck, ArrowUpRight } from "lucide-react";
+import React, { useLayoutEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import content from '@/data/rewards.json'; 
 
 gsap.registerPlugin(ScrollTrigger);
 
-const prizes = [
-  {
-    rank: "02",
-    place: "2nd Place",
-    amount: "$200",
-    account: "50K 1-Step Eval",
-    description:
-      "Second position secures a mid-tier capital allocation with strong upside potential.",
-  },
-  {
-    rank: "01",
-    place: "1st Place",
-    amount: "$400",
-    account: "100K 1-Step Eval",
-    description:
-      "Top performers unlock the highest funding tier with maximum capital exposure.",
-  },
-  {
-    rank: "03",
-    place: "3rd Place",
-    amount: "$125",
-    account: "25K 1-Step Eval",
-    description:
-      "A strong finish still earns access to entry-level capital and progression.",
-  },
-];
-
-export default function Rewards() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const counterRef = useRef<HTMLSpanElement | null>(null);
-  const textRef = useRef<HTMLParagraphElement | null>(null);
+const DiagonalCarousel = () => {
+  const component = useRef(null);
+  const { slides } = content; // Destructure the slides from your JSON
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
+    let ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.card-item');
+      const texts = gsap.utils.toArray<HTMLElement>('.description-text');
+      const navItems = gsap.utils.toArray<HTMLElement>('.nav-item');
+      const count = document.querySelector('.active-count');
 
-      // Initial state (hidden bottom-right)
+      // Tweak this value to adjust the gap! 
+      // < 100 = overlapping, 100 = corners touching, > 100 = separated with a gap
+      const cardOffset = 105; 
+
+      // 1. Initialize the staircase stack with the new gap
       gsap.set(cards, {
-        x: 300,
-        y: 300,
-        opacity: 0,
-        scale: 0.9,
-        rotate: 4,
+        xPercent: (index) => index * cardOffset,
+        yPercent: (index) => index * cardOffset,
+        filter: (index) => index === 0 ? 'grayscale(0%)' : 'grayscale(100%)',
+        opacity: 1 // Ensure all cards are always visible to form the persistent stack
       });
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=3200",
-          scrub: true,
+          trigger: component.current,
           pin: true,
-        },
+          scrub: 1,
+          start: "top top",
+          end: "+=3000",
+        }
       });
 
-      cards.forEach((card, i) => {
-        // Card entry (stacking diagonally)
-        tl.to(
-          card,
-          {
-            x: -i * 60,
-            y: -i * 60,
-            opacity: 1,
-            scale: 1,
-            rotate: 0,
-            duration: 1,
-            ease: "power3.out",
-          },
-          i * 1
-        );
+      slides.forEach((_, i) => {
+        const isFirst = i === 0;
 
-        // Counter update
-        tl.to(
-          counterRef.current,
-          {
-            innerText: prizes[i].rank,
-            duration: 0.2,
-          },
-          i * 1
-        );
+        // --- Slide Animation Logic ---
+        if (!isFirst) {
+          // Animate ALL cards dynamically together to keep the staircase intact and preserve gaps
+          cards.forEach((card, cardIndex) => {
+            tl.to(card, {
+              xPercent: (cardIndex - i) * cardOffset,
+              yPercent: (cardIndex - i) * cardOffset,
+              filter: cardIndex === i ? 'grayscale(0%)' : 'grayscale(100%)',
+              duration: 1,
+              ease: "none"
+            }, i);
+          });
 
-        // Text transition
-        tl.to(
-          textRef.current,
-          {
-            opacity: 0,
-            y: 20,
-            duration: 0.25,
+          // Text animations 
+          tl.to(texts[i - 1], { opacity: 0, y: -20, duration: 0.5 }, i)
+            .fromTo(texts[i], { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, i);
+        }
+
+        // --- UI Updates (The count & Sidebar) ---
+        tl.to({}, {
+          duration: 0.1,
+          onStart: () => {
+            if(count) count.innerHTML = slides[i].id;
+            navItems.forEach((nav, idx) => {
+              (nav as HTMLElement).style.opacity = idx === i ? "1" : "0.4";
+            });
           },
-          i * 1
-        ).to(
-          textRef.current,
-          {
-            innerText: prizes[i].description,
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-          },
-          i * 1 + 0.25
-        );
+          onReverseComplete: () => {
+            if (i > 0 && count) {
+              count.innerHTML = slides[i - 1].id;
+              navItems.forEach((nav, idx) => {
+                (nav as HTMLElement).style.opacity = idx === (i - 1) ? "1" : "0.4";
+              });
+            }
+          }
+        }, i);
       });
-    }, sectionRef);
+    }, component);
 
     return () => ctx.revert();
-  }, []);
+  }, [slides]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-screen bg-[#0b1d3a] overflow-hidden flex items-center justify-center"
-    >
-      {/* COUNTER */}
-      <div className="absolute bottom-10 left-10 text-[120px] text-[#e8e2c6] font-light leading-none">
-        <span ref={counterRef}>01</span>
+    <div ref={component} className="relative w-full h-screen min-h-screen bg-[#fffef1] overflow-hidden text-black font-sans">
+
+      {/* Sidebar Navigation - Fixed and Dynamic */}
+      <div className="absolute left-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6 text-[10px] italic">
+        {slides.map((slide, i) => (
+            <div key={i} className="nav-item dirtyline flex items-center gap-2 opacity-40 transition-opacity duration-300">
+                <span>{slide.id}</span>
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-px! bg-black"></div> 
+                    <span className="uppercase nohemi tracking-widest">{slide.reward}</span>
+                </div>
+            </div>
+        ))}
       </div>
 
-      {/* RIGHT TEXT */}
-      <div className="absolute right-20 max-w-[320px] text-white text-sm leading-relaxed">
-        <p ref={textRef}>{prizes[0].description}</p>
+      {/* Background Large Counter */}
+      <div className="absolute text-zinc-600! bottom-[-1.5%] left-[8%] z-10 pointer-events-none">
+        <h1 className="active-count text-zinc-500! text-[15vw] tracking-wide dirtyline font-bold opacity-10 leading-none">
+            {slides[0]?.id}
+        </h1>
       </div>
 
-      {/* CARD STACK */}
-      <div className="relative w-105 h-130">
-        {prizes.map((prize, i) => (
-          <div
-            key={i}
-            ref={(el) => {
-              cardsRef.current[i] = el; // ✅ FIXED (no return)
-            }}
-            className="absolute top-0 left-0 w-full h-full rounded-4xl bg-white/90 backdrop-blur-xl p-8 flex flex-col justify-between shadow-2xl border border-white/20 will-change-transform"
-          >
-            {/* TOP */}
-            <div className="flex justify-between">
-              <span className="text-5xl opacity-20 font-black">
-                {prize.rank}
-              </span>
-              <div className="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center">
-                <Trophy size={18} />
-              </div>
-            </div>
-
-            {/* MIDDLE */}
-            <div>
-              <p className="text-xs tracking-[0.3em] uppercase text-zinc-500 mb-2">
-                {prize.place}
-              </p>
-
-              <h3 className="text-5xl font-mono text-black mb-4">
-                {prize.amount}
-              </h3>
-
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-black/5 w-fit">
-                <ShieldCheck size={14} />
-                <span className="text-xs uppercase tracking-widest">
-                  {prize.account}
-                </span>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <div className="flex justify-between items-center pt-6 border-t">
-              <span className="text-xs uppercase tracking-widest text-zinc-500">
-                Claim
-              </span>
-
-              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">
-                <ArrowUpRight size={16} />
-              </div>
-            </div>
+      {/* Right Side Text Content */}
+      <div className="absolute right-[10%] top-[30%] -translate-y-1/2 w-80 z-50">
+        {slides.map((slide, i) => (
+          <div key={i} className={`description-text absolute ${i !== 0 ? 'opacity-0' : ''}`}>
+             <h3 className="text-black nohemi font-thin uppercase mb-2 tracking-normal">{slide.account}</h3>
+             <p className="text-lg text-zinc-500 dirtyline tracking-wide leading-none">{slide.text}</p>
           </div>
         ))}
       </div>
-    </section>
+
+      {/* Diagonal Card Container */}
+      <div className="flex items-center justify-center h-full w-full relative">
+        {slides.map((slide, i) => (
+          <div 
+            key={i} 
+            className="card-item absolute w-100 h-125 shadow-2xl overflow-hidden"
+            style={{ 
+                zIndex: slides.length - i
+            }}
+          >
+             <img src={slide.img} alt={slide.place} className="w-full h-full object-cover" />
+             <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply"></div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-}
+};
+
+export default DiagonalCarousel;

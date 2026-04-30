@@ -21,7 +21,7 @@ export default function WhoShouldApplyPage() {
   }, []);
 
   return (
-    <main ref={containerRef} className="relative w-full h-screen bg-[#fffef1] text-black selection:bg-[#fffef1] selection:text-[#fffef1] overflow-hidden">
+    <main ref={containerRef} className="relative mt-40 w-full h-screen bg-[#fffef1] text-black selection:bg-[#fffef1] selection:text-[#fffef1] overflow-hidden">
       {/* Split Screen Layout */}
       <div className="relative flex flex-col md:flex-row w-full h-full z-10">
         

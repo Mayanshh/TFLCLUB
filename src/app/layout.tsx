@@ -3,6 +3,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import SmoothScroll from "@/providers/SmoothScroll";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const nohemi = localFont({
   src: [
@@ -39,14 +43,14 @@ const dirtyline = localFont({
 
 export const metadata: Metadata = {
   title: "TFL CLUB",
-  description: "High-performance GSAP + Lenis Experience",
+  description: "5 days. Live trading. Profitable mentors. Real funding opportunities. Build discipline, network, and strategy in one immersive experience.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="selection:bg-zinc-900 selection:text-[#fffef1]">
+    <html lang="en" suppressHydrationWarning className={cn("selection:bg-zinc-900 selection:text-[#fffef1]", "font-sans", geist.variable)}>
       <body
         className={`${nohemi.variable} ${dirtyline.variable} font-sans antialiased bg-[#fffef1] text-black`}
       >

@@ -74,7 +74,7 @@ const Navbar = () => {
       >
         <div className="flex items-center justify-between w-full">
           {/* Left: Logo */}
-          <h1 className="text-2xl dirtyline font-black tracking-[0.09em]! leading-[0.70] text-zinc-900 dark:text-[#fffef1]">
+          <h1 className="text-2xl dirtyline font-black tracking-[0.09em]! leading-[0.70] text-[#fffef1] dark:text-[#fffef1]">
             TFLclub
           </h1>
 

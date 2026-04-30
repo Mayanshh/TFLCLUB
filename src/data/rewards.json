@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Scholarship Program",
+    "subtitle": "Trade for Real Funding",
+    "description": "Every participant gets a 100K tournament account. Top 3 win funded accounts from our prop firm partners."
+  },
+  "slides": [
+    {
+      "id": "01",
+      "place": "1st Place",
+      "reward": "$400",
+      "account": "100K 1-Step Eval Account",
+      "text": "Dominate the leaderboard and secure the ultimate 100K evaluation account. Precision, discipline, and absolute control.",
+      "img": "/images/awwards1.jpg"
+    },
+    {
+      "id": "02",
+      "place": "2nd Place",
+      "reward": "$200",
+      "account": "50K 1-Step Eval Account",
+      "text": "Consistency pays off. Claim the runner-up spot for a 50K evaluation account and secure your path to scaling.",
+      "img": "/images/awards2.jpg"
+    },
+    {
+      "id": "03",
+      "place": "3rd Place",
+      "reward": "$125",
+      "account": "25K 1-Step Eval Account",
+      "text": "Step into the professional arena. A 25K evaluation account to prove your edge in the live markets.",
+      "img": "/images/awards3.jpg"
+    }
+  ]
+}
