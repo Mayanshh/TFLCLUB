@@ -49,16 +49,20 @@ export default function HallOfFame() {
 
       <div style={{ height: '65svh', width: '100vw', position: 'relative' }}>
         <CircularGallery
-          items={data.slides.map((slide) => ({
-            image: slide.img,
-            text: `${slide.account} \n ${slide.text}`,
-          }))}
-          bend={1}
-          textColor="#ffffff"
-          borderRadius={0.001}
-          scrollSpeed={2}
-          scrollEase={0.05}
-        />
+  items={data.slides.map((slide) => ({
+    image: slide.img,
+    text: slide.account,
+    subText: slide.text,
+    mainFontSize: 90,      // Successfully added
+    mainColor: 'black',      // Successfully added
+    subFontSize: '70px',   // Successfully added
+  }))}
+  bend={1}
+  textColor="#ffffff"
+  borderRadius={0.001}
+  scrollSpeed={2}
+  scrollEase={0.05}
+/>
       </div>
     </section>
   );
