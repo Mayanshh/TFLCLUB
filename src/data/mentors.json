@@ -1,0 +1,11 @@
+[
+  { "id": "1", "name": "Rakesh", "initials": "NT", "title": "Night Trader", "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800", "season": "S1" },
+  { "id": "2", "name": "Sneha", "initials": "SN", "title": "Growth Lead", "imageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800", "season": "S1" },
+  { "id": "3", "name": "Alex K.", "initials": "AK", "title": "Market Psych", "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800", "season": "S2" },
+  { "id": "4", "name": "Marcus", "initials": "MR", "title": "Risk Expert", "imageUrl": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800", "season": "S2" },
+  { "id": "5", "name": "Elena", "initials": "EL", "title": "Tape Reading", "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800", "season": "S3" },
+  { "id": "6", "name": "Jordan", "initials": "JD", "title": "Algo Trader", "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800", "season": "S3" },
+  { "id": "7", "name": "Sarah", "initials": "SH", "title": "Macro Analyst", "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800", "season": "S4" },
+  { "id": "8", "name": "David", "initials": "DV", "title": "Prop Master", "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800", "season": "S4" },
+  { "id": "9", "name": "Chen", "initials": "WC", "title": "Scalp Expert", "imageUrl": "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?q=80&w=800", "season": "S1" }
+]

@@ -1,0 +1,55 @@
+{
+  "heading": "WhAt's InClUdeD",
+  "title": "Everything you need.",
+  "subtitle": "Nothing you don't.",
+  "included": [
+    {
+      "id": "inc-1",
+      "title": "3 Meals Daily",
+      "description": "Breakfast, lunch, and dinner throughout the bootcamp"
+    },
+    {
+      "id": "inc-2",
+      "title": "Snacks & Beverages",
+      "description": "Kept fuelled between sessions"
+    },
+    {
+      "id": "inc-3",
+      "title": "Shared Stay (Villa/Hotel)",
+      "description": "Premium accommodation at the destination"
+    },
+    {
+      "id": "inc-4",
+      "title": "Group Travel",
+      "description": "Transport from the pre-defined group pickup point"
+    },
+    {
+      "id": "inc-5",
+      "title": "100K Tournament Account",
+      "description": "Live trading account for all participants"
+    }
+  ],
+  "notIncluded": [
+    {
+      "id": "exc-1",
+      "title": "Your Travel to Destination",
+      "description": "Flights, trains, or personal transport to reach the location"
+    },
+    {
+      "id": "exc-2",
+      "title": "Extra Food & Dining Out",
+      "description": "Personal restaurant visits or additional orders"
+    },
+    {
+      "id": "exc-3",
+      "title": "Personal Cab Expenses",
+      "description": "Private transport within the city"
+    },
+    {
+      "id": "exc-4",
+      "title": "Personal Add-ons & Gifts",
+      "description": "Shopping, souvenirs, and personal purchases"
+    }
+  ],
+  "footer": "70–80% of your enrollment fee is directly invested into your stay, food, resources, and opportunities."
+}
