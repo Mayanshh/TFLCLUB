@@ -6,24 +6,26 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import CircularGallery from '@/components/ui/CircularGallery';
 import data from "@/data/hallOfFame.json";
+import { useDevice } from '@/hooks/useDevice';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HallOfFame() {
   const sectionRef = useRef(null);
+  const {isMobile} = useDevice();
 
   useGSAP(() => {
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top+=10% top",
-      end: "+=300%",
+      start:  `${isMobile ? "top top" : "top+=10% top"}`,
+      end: `${isMobile ? '+=10%' : '+=300%'}`,
       pin: true,
       pinSpacing: true,
       scrub: 1,
       // markers: true,
     });
 
-    return () => trigger.kill(); // cleanup
+    return () => trigger.kill();
   }, { scope: sectionRef });
 
   return (
@@ -47,22 +49,22 @@ export default function HallOfFame() {
         </h1>
       </div>
 
-      <div style={{ height: '65svh', width: '100vw', position: 'relative' }}>
+      <div style={{ height: `${isMobile ? '35vh' : '65vh'}`, width: '100vw', position: 'relative' }}>
         <CircularGallery
-  items={data.slides.map((slide) => ({
-    image: slide.img,
-    text: slide.account,
-    subText: slide.text,
-    mainFontSize: 90,     
-    mainColor: 'black',      
-    subFontSize: '70px', 
-  }))}
-  bend={1}
-  textColor="#ffffff"
-  borderRadius={0.001}
-  scrollSpeed={2}
-  scrollEase={0.05}
-/>
+          items={data.slides.map((slide) => ({
+            image: slide.img,
+            text: slide.account,
+            subText: slide.text,
+            mainFontSize: 90,     
+            mainColor: 'black',      
+            subFontSize: '70px', 
+          }))}
+          bend={1}
+          textColor="#ffffff"
+          borderRadius={0.001}
+          scrollSpeed={2}
+          scrollEase={0.05}
+          />
       </div>
     </section>
   );

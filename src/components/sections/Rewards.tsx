@@ -112,7 +112,8 @@ const DiagonalCarousel = () => {
   // MOBILE VIEW
   if (isMobile) {
     return (
-      <section className="w-full bg-[#fffef1] px-4 py-20 flex flex-col gap-16">
+      <section id='rewards' className="w-full bg-[#fffef1] px-4 py-20 flex flex-col gap-16">
+        <h1 className='dirtyline text-5xl md:hidden block mt-25'>Trade for Real FunDInG</h1>
         {slides.map((slide, i) => (
           <div key={i} className="flex flex-col gap-4">
             <img

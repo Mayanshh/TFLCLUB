@@ -103,7 +103,7 @@ const Projects: React.FC = () => {
 
   return (
     <section
-      id="projects-section"
+      id="about"
       className="relative z-20 w-full bg-[#fffef1] px-4 lg:px-8 pt-[5vh] lg:pt-[10vh]"
     >
       {/* -----------------------------

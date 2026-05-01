@@ -13,10 +13,10 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { name: 'Speakers', href: '#speakers' },
-  { name: 'Benefits', href: '#benefits' },
-  { name: 'Venue', href: '#venue' },
   { name: 'About', href: '#about' },
+  { name: 'Events', href: '#events' },
+  { name: 'Benefits', href: '#rewards' },
+  { name: 'Mentors', href: '#mentors' },
 ];
 
 const Navbar = () => {

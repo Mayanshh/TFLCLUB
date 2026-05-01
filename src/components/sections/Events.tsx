@@ -52,6 +52,7 @@ export default function EventsPage() {
 
   return (
     <main
+      id='events'
       ref={pageContainer}
       className="bg-[#fffef1] min-h-screen text-black selection:bg-black selection:text-[#fffef1]"
     >

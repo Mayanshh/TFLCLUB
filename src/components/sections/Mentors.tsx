@@ -45,6 +45,7 @@ export default function Mentors({
 
   return (
     <section 
+      id='mentors'
       ref={containerRef}
       className="bg-[#fffef1] py-24 overflow-hidden select-none"
     >

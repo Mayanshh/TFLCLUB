@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -6,30 +6,14 @@ import SmoothScroll from "@/providers/SmoothScroll";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 const nohemi = localFont({
   src: [
-    { 
-      path: "../../public/fonts/Nohemi-Light.woff2", 
-      weight: "300", 
-      style: "normal" 
-    },
-    { 
-      path: "../../public/fonts/Nohemi-Regular.woff2", 
-      weight: "400", 
-      style: "normal" 
-    },
-    { 
-      path: "../../public/fonts/Nohemi-SemiBold.woff2", 
-      weight: "600", 
-      style: "normal" 
-    },
-    { 
-      path: "../../public/fonts/Nohemi-Black.woff2", 
-      weight: "900", 
-      style: "normal" 
-    },
+    { path: "../../public/fonts/Nohemi-Light.woff2", weight: "300", style: "normal" },
+    { path: "../../public/fonts/Nohemi-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/Nohemi-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../../public/fonts/Nohemi-Black.woff2", weight: "900", style: "normal" },
   ],
   variable: "--font-nohemi",
   display: "swap",
@@ -41,19 +25,87 @@ const dirtyline = localFont({
   display: "swap",
 });
 
+// SEO & Shareable Metadata
 export const metadata: Metadata = {
-  title: "TFL CLUB",
+  metadataBase: new URL('https://tflclub.vercel.app/'),
+  title: {
+    default: "TFL CLUB | Elite Trading Bootcamp",
+    template: "%s | TFL CLUB",
+  },
   description: "5 days. Live trading. Profitable mentors. Real funding opportunities. Build discipline, network, and strategy in one immersive experience.",
+  keywords: ["Trading Bootcamp", "Prop Firm Funding", "Live Trading", "Financial Discipline", "TFL Club", "Trading Mentorship"],
+  authors: [{ name: "TFL CLUB" }],
+  creator: "TFL CLUB",
+  
+  // Open Graph (Facebook, LinkedIn, Discord)
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://tflclub.vercel.app/",
+    siteName: "TFL CLUB",
+    title: "TFL CLUB | Elite Trading Bootcamp",
+    description: "Join the definitive stage of your trading journey. Live execution, institutional capital, and an elite network.",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TFL CLUB - The Journey to Profitability",
+      },
+    ],
+  },
+
+  // Twitter
+  twitter: {
+    card: "summary_large_image",
+    title: "TFL CLUB | Elite Trading Bootcamp",
+    description: "5 days. Live trading. Real funding. Identify your coordinates in the professional spectrum.",
+    images: ["/images/og-image.png"], // Same image as OG
+    creator: "@tflclub",
+  },
+
+  // Icons & Favicons
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
+
+  // Search Engine Instructions
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fffef1",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("selection:bg-zinc-900 selection:text-[#fffef1]", "font-sans", geist.variable)}>
-      <body
-        className={`${nohemi.variable} ${dirtyline.variable} font-sans antialiased bg-[#fffef1] text-black`}
-      >
+    <html 
+      lang="en" 
+      suppressHydrationWarning 
+      className={cn(
+        "selection:bg-zinc-900 selection:text-[#fffef1]", 
+        geist.variable,
+        nohemi.variable,
+        dirtyline.variable
+      )}
+    >
+      <body className="font-sans antialiased bg-[#fffef1] text-black">
         <SmoothScroll>
           <main className="relative min-h-screen">
             {children}
