@@ -93,12 +93,12 @@ const Navbar = () => {
             TFLclub
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-10">
+          <div className="hidden md:flex items-center gap-6 lg:gap-10 mix-blend-difference!">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-[10px] lg:text-xs uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition-colors"
+                className="text-[10px] lg:text-xs uppercase tracking-[0.2em] font-medium text-white hover:text-white transition-colors"
               >
                 {link.name}
               </Link>
