@@ -18,7 +18,7 @@ export default function Home() {
       <About />
       <Events />      
       <Rewards />
-      <div id="rewards_scrollable_area" className="h-[400svh] w-full bg-[#fffef1]"></div>
+      <div id="rewards_scrollable_area" className="hidden md:block h-[400svh] w-full bg-[#fffef1]"></div>
       <WhoShouldApply />
       <HallOfFame />
       <MentorsSection />

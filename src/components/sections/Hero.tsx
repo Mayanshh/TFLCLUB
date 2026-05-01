@@ -1,46 +1,70 @@
 "use client";
 
-import Navbar from "@/components/ui/navbar";
+import Navbar from "@/components/ui/Navbar";
 import Button from "@/components/ui/Button";
 
 export default function Hero() {
   return (
-    <section 
-      id="hero-section" 
+    <section
+      id="hero-section"
       className="relative h-svh w-full overflow-hidden bg-zinc-950 flex flex-col items-center justify-center lg:items-start lg:justify-end"
     >
-        <Navbar />
+      {/* Navigation */}
+      <Navbar />
+
+      {/* Background Video */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
-        // poster="/images/motionGIF-BG.jpg"
+        preload="metadata"
         className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
       >
         <source src="/videos/heroBgVid.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
 
-      <div className="relative z-10 flex h-fit w-fit mb-10 flex-col items-start justify-center px-6 text-center">
-        <p className="text-[#fffef1]/90 font-light tracking-[0.2em] mb-8 ml-1 text-xs md:text-sm">
-           INVITE ONLY · 30 SPOTS PER SEASON
-          </p>
-        <h1 className="font-bold max-w-[70vw] lg:text-left dirtyline text-5xl md:text-8xl text-[#fffefb] tracking-normal leading-[0.95]">
-          India's Most Exclusive <br /> Trading Bootcamp
+      {/* Content Container */}
+      <div className="relative z-10 w-full max-w-350 flex flex-col items-center lg:items-start justify-end px-4 sm:px-6 md:px-10 lg:px-16 pb-10 lg:pb-14 text-center lg:text-left">
+
+        {/* Tagline */}
+        <p className="text-[#fffef1]/90 font-light tracking-[0.2em] mb-6 text-[10px] sm:text-xs md:text-sm">
+          INVITE ONLY · 30 SPOTS PER SEASON
+        </p>
+
+        {/* Heading */}
+        <h1 className="dirtyline font-bold text-[#fffef1] tracking-normal leading-[0.95]
+          text-[clamp(2.5rem,6vw,6.5rem)] max-w-[95%] lg:max-w-[70vw]"
+        >
+          India's Most Exclusive <br className="hidden sm:block" />
+          Trading Bootcamp
         </h1>
-        <div className="flex h-20 flex-col lg:flex-row items-center lg:w-[55vw] justify-between">
-          <p className="text-[#fffef1]/80 ml-1 font-light tracking-[0.2em] text-xs md:text-sm">
-           5 days. Live trading. Profitable mentors. Real funding opportunities. <br /> Build discipline, network, and strategy in one immersive experience.
+
+        {/* Bottom Section */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between w-full lg:w-[55vw] mt-6 gap-6 lg:gap-0">
+
+          {/* Description */}
+          <p className="text-[#fffef1]/80 font-light tracking-tight md:tracking-[0.2em]
+            text-sm sm:text-base md:text-sm leading-snug md:leading-normal max-w-[90%] lg:max-w-none"
+          >
+            5 days. Live trading. Profitable mentors. Real funding opportunities.
+            <br className="hidden md:block" />
+            Build discipline, network, and strategy in one immersive experience.
           </p>
-            <Button className="w-40 md:w-45 md:h-11 uppercase" variant="solid" showArrow>
-           Apply For Next Season
+
+          {/* CTA */}
+          <Button
+            className="py-3 sm:py-4 w-48 sm:w-48 uppercase"
+            variant="liquid"
+            showArrow
+          >
+            Apply For <br /> Next Season
           </Button>
         </div>
       </div>
-      {/* Bottom Gradient for smooth transition to next section */}
-      <div className="absolute inset-0 z-5 bg-linear-to-b from-transparent via-transparent to-zinc-950/80" />
+
+      {/* Bottom Gradient */}
+      <div className="pointer-events-none absolute inset-0 z-5 bg-linear-to-b from-transparent via-transparent to-zinc-950/80" />
     </section>
   );
 }

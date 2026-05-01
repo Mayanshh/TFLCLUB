@@ -2,50 +2,65 @@
 
 import React, { forwardRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+import { cn } from "@/lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "solid" | "liquid";
-  size?: "sm" | "md" | "lg" | "xl"; // Controls Height
+  size?: "sm" | "md" | "lg" | "xl";
   showArrow?: boolean;
   blur?: "none" | "sm" | "md" | "lg" | "xl";
   fullWidth?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ 
-    className, 
-    variant = "solid", 
-    size = "md", 
-    showArrow = false, 
-    blur = "md", 
-    fullWidth = false, 
-    children, 
-    ...props 
-  }, ref) => {
-    
+  (
+    {
+      className,
+      variant = "solid",
+      size = "md",
+      showArrow = false,
+      blur = "md",
+      fullWidth = false,
+      children,
+      type = "button",
+      ...props
+    },
+    ref
+  ) => {
     const isSolid = variant === "solid";
 
-    // 1. Size Mapping (Scales Height and Padding)
-    const sizeClasses = {
-      sm: "h-10 text-xs pl-4 pr-12",
-      md: "h-12 text-sm pl-6 pr-14",
-      lg: "h-14 text-base pl-8 pr-16",
-      xl: "h-16 text-lg pl-10 pr-20",
+    /**
+     * Configuration for sizing and spacing.
+     * Maintains exact desktop dimensions while ensuring mobile scaling.
+     */
+    const sizeConfig = {
+      sm: {
+        dimensions: "h-10 text-xs",
+        padding: showArrow ? "pl-4 pr-12" : "px-6",
+        iconContainer: "h-[32px] w-[32px]",
+        iconSize: 14,
+      },
+      md: {
+        dimensions: "h-12 text-sm",
+        padding: showArrow ? "pl-6 pr-14" : "px-8",
+        iconContainer: "h-[40px] w-[40px]",
+        iconSize: 18,
+      },
+      lg: {
+        dimensions: "h-14 text-base",
+        padding: showArrow ? "pl-8 pr-16" : "px-10",
+        iconContainer: "h-[48px] w-[48px]",
+        iconSize: 20,
+      },
+      xl: {
+        dimensions: "h-16 text-lg",
+        padding: showArrow ? "pl-10 pr-20" : "px-12",
+        iconContainer: "h-[56px] w-[56px]",
+        iconSize: 22,
+      },
     };
 
-    // If no arrow is shown, we use symmetrical horizontal padding
-    const noArrowPadding = {
-      sm: "px-6",
-      md: "px-8",
-      lg: "px-10",
-      xl: "px-12",
-    };
-
-    const blurClasses = {
+    const blurStyles = {
       none: "",
       sm: "backdrop-blur-sm",
       md: "backdrop-blur-md",
@@ -53,41 +68,50 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       xl: "backdrop-blur-xl",
     };
 
+    const currentSize = sizeConfig[size];
+
     return (
       <button
         ref={ref}
+        type={type}
         className={cn(
-          "group relative inline-flex items-center justify-start rounded-full transition-all duration-300",
-          "font-semibold tracking-tight active:scale-95 disabled:opacity-50 select-none outline-none",
+          "group relative inline-flex items-center whitespace-normal leading-[1.1]! nohemi font-light! justify-between rounded-full transition-all duration-500",
+          "font-semibold tracking-wide active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed select-none outline-none",
           
-          // Apply size-based height and padding
-          showArrow ? sizeClasses[size] : noArrowPadding[size],
+          currentSize.dimensions,
+          currentSize.padding,
 
-          // Variation Styles
-          isSolid ? "bg-[#fffef1] text-black hover:bg-zinc-100" : [
-            "bg-[#fffef1]/10 border-[0.5px] border-[#fffef1]/20 text-[#fffef1] hover:bg-[#fffef1]/15",
-            blurClasses[blur],
-          ],
+          isSolid 
+            ? "bg-[#fffef1] text-black hover:bg-white" 
+            : [
+                "bg-[#fffef1]/10 border-[0.5px] border-[#fffef1]/20 text-[#fffef1] hover:bg-[#fffef1]/15",
+                blurStyles[blur],
+              ],
 
-          fullWidth && "w-full",
-          className // User can still pass w-64, h-20, etc. here
+          fullWidth ? "w-full" : "w-auto",
+          className
         )}
         {...props}
       >
-        <span className="relative z-10">{children}</span>
+        <span className="relative z-10 whitespace-nowrap">
+          {children}
+        </span>
 
         {showArrow && (
-          <div 
+          <div
             className={cn(
               "absolute right-1 top-1/2 -translate-y-1/2",
-              "flex aspect-square h-[90%] items-center justify-center rounded-full transition-colors duration-300",
-              isSolid ? "bg-black text-[#fffef1]" : "border border-[#fffef1]/30 bg-[#fffef1]/5 text-[#fffef1]"
+              "flex items-center justify-center rounded-full transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]",
+              currentSize.iconContainer,
+              isSolid 
+                ? "bg-black text-[#fffef1] group-hover:bg-zinc-900" 
+                : "border border-[#fffef1]/30 bg-[#fffef1]/5 text-[#fffef1] group-hover:bg-[#fffef1]/10"
             )}
           >
-            <ArrowRight 
-              size={size === "sm" ? 14 : size === "xl" ? 22 : 18} 
-              strokeWidth={2.5} 
-              className="transition-all duration-400 ease-out group-hover:-rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" 
+            <ArrowRight
+              size={currentSize.iconSize}
+              strokeWidth={2.5}
+              className="transition-transform origin-center duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
           </div>
         )}
@@ -96,6 +120,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-Button.displayName = "DynamicCapsuleButton";
+Button.displayName = "Button";
 
 export default Button;

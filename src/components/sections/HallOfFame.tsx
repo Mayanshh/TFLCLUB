@@ -53,9 +53,9 @@ export default function HallOfFame() {
     image: slide.img,
     text: slide.account,
     subText: slide.text,
-    mainFontSize: 90,      // Successfully added
-    mainColor: 'black',      // Successfully added
-    subFontSize: '70px',   // Successfully added
+    mainFontSize: 90,     
+    mainColor: 'black',      
+    subFontSize: '70px', 
   }))}
   bend={1}
   textColor="#ffffff"

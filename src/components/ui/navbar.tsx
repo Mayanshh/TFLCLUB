@@ -1,126 +1,139 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { Menu, X } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const navLinks = [
-  { name: 'Speakers', href: '#' },
-  { name: 'Benefits', href: '#' },
-  { name: 'Venue', href: '#' },
-  { name: 'About', href: '#' },
+interface NavLink {
+  name: string;
+  href: string;
+}
+
+const navLinks: NavLink[] = [
+  { name: 'Speakers', href: '#speakers' },
+  { name: 'Benefits', href: '#benefits' },
+  { name: 'Venue', href: '#venue' },
+  { name: 'About', href: '#about' },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  
   const container = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
 
-  // 1. Initial Load Animation
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(navRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power4.out',
-        delay: 0.2,
-      });
-    }, container);
+  useGSAP(() => {
+    gsap.from(navRef.current, {
+      y: -100,
+      opacity: 0,
+      duration: 1.2,
+      ease: 'power4.out',
+      delay: 0.5,
+    });
+  }, { scope: container });
 
-    return () => ctx.revert();
-  }, []);
-
-  // 2. Mobile Menu Toggle Animation
-  useLayoutEffect(() => {
+  useGSAP(() => {
     if (!menuRef.current) return;
 
     if (isOpen) {
       gsap.to(menuRef.current, {
         height: 'auto',
         opacity: 1,
-        duration: 0.4,
-        ease: 'power2.out',
+        duration: 0.5,
+        ease: 'expo.out',
         display: 'block',
       });
-      // Staggered link entrance
+
       gsap.fromTo(
         '.mobile-link',
-        { y: 10, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.1, duration: 0.3, ease: 'back.out(1.7)' }
+        { y: 20, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          stagger: 0.08, 
+          duration: 0.4, 
+          ease: 'power3.out',
+          delay: 0.1 
+        }
       );
     } else {
       gsap.to(menuRef.current, {
         height: 0,
         opacity: 0,
-        duration: 0.3,
-        ease: 'power2.in',
+        duration: 0.4,
+        ease: 'expo.inOut',
         display: 'none',
       });
     }
-  }, [isOpen]);
+  }, { dependencies: [isOpen], scope: container });
 
   return (
-    <div ref={container} className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+    <header 
+      ref={container} 
+      className="fixed top-4 md:top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+    >
       <nav
         ref={navRef}
-        className="
-          relative flex flex-col items-center
-          w-full md:w-1/3 min-w-85 lg:min-w-150
-          bg-zinc-950/40 backdrop-blur-2xl 
-          rounded-[40px] shadow-2xl shadow-black/10 px-6 py-4.5
-        "
+        className={cn(
+          "relative flex flex-col items-center pointer-events-auto",
+          "w-full max-w-[95vw] md:w-auto md:min-w-125 lg:min-w-162.5",
+          "bg-zinc-950/40 backdrop-blur-2xl border border-white/10",
+          "rounded-[24px] md:rounded-[40px] shadow-2xl shadow-black/20 px-5 py-3 md:px-8 md:py-4.5"
+        )}
       >
         <div className="flex items-center justify-between w-full">
-          {/* Left: Logo */}
-          <h1 className="text-2xl dirtyline font-black tracking-[0.09em]! leading-[0.70] text-[#fffef1] dark:text-[#fffef1]">
+          <Link 
+            href="/" 
+            className="text-xl md:text-2xl dirtyline font-black tracking-[0.09em] leading-[0.70] text-white"
+          >
             TFLclub
-          </h1>
+          </Link>
 
-          {/* Center: Desktop Items */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-10">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm uppercase tracking-widest font-light text-zinc-300 hover:text-zinc-900 dark:hover:text-[#fffef1] transition-colors"
+                className="text-[10px] lg:text-xs uppercase tracking-[0.2em] font-medium text-zinc-400 hover:text-white transition-colors"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
 
-          {/* Right: Hamburger (Mobile) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-zinc-900 dark:text-[#fffef1] focus:outline-none"
+            aria-label="Toggle Menu"
+            className="md:hidden p-2 text-white focus:outline-none"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
           </button>
         </div>
 
-        {/* Mobile Dropdown (Animated via GSAP) */}
         <div
           ref={menuRef}
           className="hidden overflow-hidden w-full md:hidden"
           style={{ height: 0, opacity: 0 }}
         >
-          <div className="flex flex-col items-center gap-4 py-6">
+          <div className="flex flex-col items-center gap-6 py-8 mt-2 border-t border-white/5">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
-                className="mobile-link text-lg font-medium text-zinc-800 dark:text-zinc-200"
+                className="mobile-link text-lg font-light tracking-widest text-zinc-300 hover:text-white uppercase"
                 onClick={() => setIsOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
       </nav>
-    </div>
+    </header>
   );
 };
 

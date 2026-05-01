@@ -1,135 +1,186 @@
 'use client';
 
-import React, { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import content from '@/data/rewards.json'; 
+
+import content from '@/data/rewards.json';
+import { useDevice } from '@/hooks/useDevice';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const formatCounter = (num: string | number) => {
+  return String(num).padStart(2, '0'); 
+};
+
 const DiagonalCarousel = () => {
-  const component = useRef(null);
-  const { slides } = content; // Destructure the slides from your JSON
+  const component = useRef<HTMLDivElement>(null);
+  const countRef = useRef<HTMLHeadingElement>(null);
+
+  const { slides } = content;
+  const { isMobile } = useDevice();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLElement>('.card-item');
-      const texts = gsap.utils.toArray<HTMLElement>('.description-text');
-      const navItems = gsap.utils.toArray<HTMLElement>('.nav-item');
-      const count = document.querySelector('.active-count');
+    if (!mounted || isMobile || !component.current) return;
 
-      // Tweak this value to adjust the gap! 
-      // < 100 = overlapping, 100 = corners touching, > 100 = separated with a gap
-      const cardOffset = 105; 
+    const root = component.current;
 
-      // 1. Initialize the staircase stack with the new gap
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>(root.querySelectorAll('.card-item'));
+      const texts = gsap.utils.toArray<HTMLElement>(root.querySelectorAll('.description-text'));
+      const navItems = gsap.utils.toArray<HTMLElement>(root.querySelectorAll('.nav-item'));
+
+      if (!cards.length) return;
+
+      const cardOffset = 105;
+
+      // INITIAL STATE
       gsap.set(cards, {
-        xPercent: (index) => index * cardOffset,
-        yPercent: (index) => index * cardOffset,
-        filter: (index) => index === 0 ? 'grayscale(0%)' : 'grayscale(100%)',
-        opacity: 1 // Ensure all cards are always visible to form the persistent stack
+        xPercent: (i) => i * cardOffset,
+        yPercent: (i) => i * cardOffset,
+        filter: (i) => (i === 0 ? 'grayscale(0%)' : 'grayscale(100%)'),
+        opacity: 1,
       });
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: component.current,
+          trigger: root,
           pin: true,
           scrub: 1,
-          start: "top top",
-          end: "+=3000",
-        }
+          start: 'top top',
+          end: `+=${slides.length * 1000}`,
+          anticipatePin: 1,
+          // ✅ FIX: Use onUpdate to sync the counter and nav with scroll progress
+          onUpdate: (self) => {
+            // Calculate the current active index based on scroll progress
+            const progress = self.progress;
+            const activeIndex = Math.round(progress * (slides.length - 1));
+
+            // Update Counter
+            if (countRef.current && slides[activeIndex]) {
+              countRef.current.textContent = formatCounter(slides[activeIndex].id);
+            }
+
+            // Update Nav Items Opacity
+            navItems.forEach((nav, idx) => {
+              gsap.to(nav, {
+                opacity: idx === activeIndex ? 1 : 0.4,
+                duration: 0.1,
+                overwrite: 'auto'
+              });
+            });
+          },
+        },
       });
 
+      // Handle Card and Text Transitions
       slides.forEach((_, i) => {
-        const isFirst = i === 0;
-
-        // --- Slide Animation Logic ---
-        if (!isFirst) {
-          // Animate ALL cards dynamically together to keep the staircase intact and preserve gaps
+        if (i !== 0) {
+          // Move all cards diagonally
           cards.forEach((card, cardIndex) => {
             tl.to(card, {
               xPercent: (cardIndex - i) * cardOffset,
               yPercent: (cardIndex - i) * cardOffset,
               filter: cardIndex === i ? 'grayscale(0%)' : 'grayscale(100%)',
               duration: 1,
-              ease: "none"
+              ease: 'none',
             }, i);
           });
 
-          // Text animations 
+          // Animate text descriptions
           tl.to(texts[i - 1], { opacity: 0, y: -20, duration: 0.5 }, i)
-            .fromTo(texts[i], { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, i);
+            .fromTo(texts[i], 
+              { opacity: 0, y: 20 }, 
+              { opacity: 1, y: 0, duration: 0.5 }, 
+              i
+            );
         }
-
-        // --- UI Updates (The count & Sidebar) ---
-        tl.to({}, {
-          duration: 0.1,
-          onStart: () => {
-            if(count) count.innerHTML = slides[i].id;
-            navItems.forEach((nav, idx) => {
-              (nav as HTMLElement).style.opacity = idx === i ? "1" : "0.4";
-            });
-          },
-          onReverseComplete: () => {
-            if (i > 0 && count) {
-              count.innerHTML = slides[i - 1].id;
-              navItems.forEach((nav, idx) => {
-                (nav as HTMLElement).style.opacity = idx === (i - 1) ? "1" : "0.4";
-              });
-            }
-          }
-        }, i);
       });
-    }, component);
+    }, root);
 
-    return () => ctx.revert();
-  }, [slides]);
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, [mounted, slides, isMobile]);
 
-  return (
-    <div ref={component} className="relative w-full h-screen min-h-screen bg-[#fffef1] overflow-hidden text-black font-sans">
-
-      {/* Sidebar Navigation - Fixed and Dynamic */}
-      <div className="absolute left-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-6 text-[10px] italic">
+  // MOBILE VIEW
+  if (isMobile) {
+    return (
+      <section className="w-full bg-[#fffef1] px-4 py-20 flex flex-col gap-16">
         {slides.map((slide, i) => (
-            <div key={i} className="nav-item dirtyline flex items-center gap-2 opacity-40 transition-opacity duration-300">
-                <span>{slide.id}</span>
-                <div className="flex items-center gap-2">
-                    <div className="w-2 h-px! bg-black"></div> 
-                    <span className="uppercase nohemi tracking-widest">{slide.reward}</span>
-                </div>
-            </div>
+          <div key={i} className="flex flex-col gap-4">
+            <img
+              src={slide.img}
+              alt={slide.place}
+              className="w-full h-[50vh] object-cover rounded-2xl"
+            />
+            <h3 className="nohemi uppercase text-sm text-zinc-500">{slide.account}</h3>
+            <p className="dirtyline text-xl text-zinc-700">{slide.text}</p>
+          </div>
         ))}
-      </div>
+      </section>
+    );
+  }
 
-      {/* Background Large Counter */}
-      <div className="absolute text-zinc-600! bottom-[-1.5%] left-[8%] z-10 pointer-events-none">
-        <h1 className="active-count text-zinc-500! text-[15vw] tracking-wide dirtyline font-bold opacity-10 leading-none">
-            {slides[0]?.id}
-        </h1>
-      </div>
-
-      {/* Right Side Text Content */}
-      <div className="absolute right-[10%] top-[30%] -translate-y-1/2 w-80 z-50">
+  // DESKTOP VIEW
+  return (
+    <div
+      ref={component}
+      className="relative w-full h-screen min-h-screen bg-[#fffef1] overflow-hidden text-black font-sans"
+    >
+      {/* Sidebar Navigation */}
+      <div className="absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4 sm:gap-6 text-[9px] sm:text-[10px] italic">
         {slides.map((slide, i) => (
-          <div key={i} className={`description-text absolute ${i !== 0 ? 'opacity-0' : ''}`}>
-             <h3 className="text-black nohemi font-thin uppercase mb-2 tracking-normal">{slide.account}</h3>
-             <p className="text-lg text-zinc-500 dirtyline tracking-wide leading-none">{slide.text}</p>
+          <div key={i} className="nav-item dirtyline flex items-center gap-2 opacity-40">
+            <span>{formatCounter(slide.id)}</span>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-px bg-black" />
+              <span className="uppercase nohemi tracking-widest">{slide.reward}</span>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Diagonal Card Container */}
+      {/* Main Large Counter */}
+      <div className="absolute bottom-[-1.5%] left-[5%] sm:left-[8%] z-10 pointer-events-none">
+        <h1
+          ref={countRef}
+          suppressHydrationWarning
+          className="text-zinc-500 text-[15vw] tracking-wide dirtyline font-bold opacity-10 leading-none"
+        >
+          {mounted ? formatCounter(slides[0]?.id) : '00'}
+        </h1>
+      </div>
+
+      {/* Description Text */}
+      <div className="absolute right-[5%] sm:right-[10%] top-[35%] sm:top-[30%] -translate-y-1/2 w-64 sm:w-80 z-50">
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            className={`description-text absolute ${i !== 0 ? 'opacity-0' : ''}`}
+          >
+            <h3 className="text-black nohemi font-thin uppercase mb-2">{slide.account}</h3>
+            <p className="text-base sm:text-lg text-zinc-500 dirtyline leading-none">{slide.text}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Carousel Cards */}
       <div className="flex items-center justify-center h-full w-full relative">
         {slides.map((slide, i) => (
-          <div 
-            key={i} 
-            className="card-item absolute w-100 h-125 shadow-2xl overflow-hidden"
-            style={{ 
-                zIndex: slides.length - i
-            }}
+          <div
+            key={i}
+            className="card-item absolute w-[70vw] sm:w-105 h-[90vw] sm:h-130 shadow-2xl overflow-hidden"
+            style={{ zIndex: slides.length - i }}
           >
-             <img src={slide.img} alt={slide.place} className="w-full h-full object-cover" />
-             <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply"></div>
+            <img src={slide.img} alt={slide.place} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply" />
           </div>
         ))}
       </div>
