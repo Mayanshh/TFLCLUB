@@ -7,6 +7,9 @@ import HallOfFame from "@/components/sections/HallOfFame";
 import MentorsSection from "@/components/sections/Mentors";
 import WhatsIncluded from "@/components/sections/WhatsIncluded";
 import Partners from "@/components/sections/Partners";
+import Faq from "@/components/sections/Faq";
+import Offer from "@/components/sections/Offer";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   return (
@@ -21,6 +24,9 @@ export default function Home() {
       <MentorsSection />
       <WhatsIncluded />
       <Partners />
+      <Faq />
+      <Offer />
+      <Footer />
     </main>
   );
 }

@@ -1,0 +1,16 @@
+{
+  "brand": "TFL club",
+  "description": "An elite collective pushing the boundaries of digital and physical interaction through curated seasonal events.",
+  "seasons": [
+    { "id": "001", "loc": "Tokyo / Shibuya", "status": "Closed" },
+    { "id": "002", "loc": "London / Soho", "status": "Closed" },
+    { "id": "003", "loc": "Berlin / Mitte", "status": "Open" }
+  ],
+  "contact": {
+    "email": "hello@tfl-club.com",
+    "phone": "+44 20 7946 0958",
+    "site": "tfl-club.com"
+  },
+  "tagline": "Innovation through collaboration",
+  "legal": "© 2026 TFL-CLUB. ALL RIGHTS RESERVED."
+}
