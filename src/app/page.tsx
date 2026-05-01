@@ -6,6 +6,7 @@ import Rewards from "@/components/sections/Rewards";
 import HallOfFame from "@/components/sections/HallOfFame";
 import MentorsSection from "@/components/sections/Mentors";
 import WhatsIncluded from "@/components/sections/WhatsIncluded";
+import Partners from "@/components/sections/Partners";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <HallOfFame />
       <MentorsSection />
       <WhatsIncluded />
+      <Partners />
     </main>
   );
 }

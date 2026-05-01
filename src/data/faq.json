@@ -1,0 +1,37 @@
+{
+  "heading": "FAQ",
+  "title": "Common",
+  "subtitle": "Questions",
+  "faqs": [
+    {
+      "id": 1,
+      "question": "Can I get a refund if I miss the event?",
+      "answer": "Our policy focuses on limited seating. While we don't offer standard refunds for missed sessions, we provide digital recordings and priority access to the next seasonal event."
+    },
+    {
+      "id": 2,
+      "question": "Will I become profitable after attending TFLCLUB?",
+      "answer": "Profitability is a journey of discipline. We provide the institutional framework and live execution strategies used by pros, but your results depend on your risk management and consistency."
+    },
+    {
+      "id": 3,
+      "question": "Can I learn strategies within 5 days?",
+      "answer": "Yes. Our curriculum is stripped of 'retail noise'. We focus on 3 core high-probability setups that can be mastered quickly through our intensive live-trading immersion."
+    },
+    {
+      "id": 4,
+      "question": "Are there any discounts available?",
+      "answer": "We offer early-bird tiers and group rates for teams of 3 or more. Check our official channels for limited-time seasonal codes."
+    },
+    {
+      "id": 5,
+      "question": "What happens after the season ends?",
+      "answer": "You retain lifetime access to the private TFL alumni community, weekly market breakdown calls, and our proprietary indicator suite."
+    },
+    {
+      "id": 6,
+      "question": "Who is this NOT for?",
+      "answer": "This is not for 'get-rich-quick' seekers or those unwilling to unlearn retail trading myths. We require a professional mindset and capital readiness."
+    }
+  ]
+}
