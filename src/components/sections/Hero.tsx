@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/ui/navbar";
+import Navbar from "@/components/ui/Navbar";
 import Button from "@/components/ui/Button";
 
 export default function Hero() {
