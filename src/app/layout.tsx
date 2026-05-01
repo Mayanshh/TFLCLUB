@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
-import SmoothScroll from "@/providers/SmoothScroll";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import AppWrapper from "@/components/ui/AppWrapper";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -25,7 +24,6 @@ const dirtyline = localFont({
   display: "swap",
 });
 
-// SEO & Shareable Metadata
 export const metadata: Metadata = {
   metadataBase: new URL('https://tflclub.vercel.app/'),
   title: {
@@ -36,8 +34,6 @@ export const metadata: Metadata = {
   keywords: ["Trading Bootcamp", "Prop Firm Funding", "Live Trading", "Financial Discipline", "TFL Club", "Trading Mentorship"],
   authors: [{ name: "TFL CLUB" }],
   creator: "TFL CLUB",
-  
-  // Open Graph (Facebook, LinkedIn, Discord)
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -45,43 +41,23 @@ export const metadata: Metadata = {
     siteName: "TFL CLUB",
     title: "TFL CLUB | Elite Trading Bootcamp",
     description: "Join the definitive stage of your trading journey. Live execution, institutional capital, and an elite network.",
-    images: [
-      {
-        url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "TFL CLUB - The Journey to Profitability",
-      },
-    ],
+    images: [{ url: "/images/og-image.png", width: 1200, height: 630, alt: "TFL CLUB" }],
   },
-
-  // Twitter
   twitter: {
     card: "summary_large_image",
     title: "TFL CLUB | Elite Trading Bootcamp",
     description: "5 days. Live trading. Real funding. Identify your coordinates in the professional spectrum.",
-    images: ["/images/og-image.png"], // Same image as OG
+    images: ["/images/og-image.png"],
     creator: "@tflclub",
   },
-
-  // Icons & Favicons
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.png",
     apple: "/favicon.png",
   },
-
-  // Search Engine Instructions
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
 };
 
@@ -106,11 +82,10 @@ export default function RootLayout({
       )}
     >
       <body className="font-sans antialiased bg-[#fffef1] text-black">
-        <SmoothScroll>
-          <main className="relative min-h-screen">
-            {children}
-          </main>
-        </SmoothScroll>
+        {/* Pass the children into our Client Wrapper */}
+        <AppWrapper>
+          {children}
+        </AppWrapper>
       </body>
     </html>
   );
