@@ -1,0 +1,53 @@
+{
+  "header": {
+    "tagline": "What is TFLCLUB",
+    "title": "Not a course. An experience."
+  },
+  "rows": [
+    {
+      "items": [
+        {
+          "id": "1",
+          "src": "/images/parallax1.avif",
+          "title": "Structured daily routines at scenic locations across India. Build discipline away from the noise.",
+          "desktop": { "width": "28vw", "height": "65vh" },
+          "mobile": { "width": "90vw", "height": "50vh" }
+        },
+        {
+          "id": "2",
+          "src": "/images/parallax2.avif",
+          "title": "Trade alongside profitable mentors in real-time. Watch, learn, and execute with a 100K tournament account.",
+          "desktop": { "width": "28vw", "height": "65vh" }
+        },
+        {
+          "id": "3",
+          "src": "/images/parallax3.avif",
+          "title": "Connect with India's most profitable traders. Learn their strategies, psychology, and risk management.",
+          "desktop": { "width": "28vw", "height": "65vh" }
+        }
+      ]
+    },
+    {
+      "items": [
+        {
+          "id": "4",
+          "src": "/images/parallax4.avif",
+          "title": "Closed tournament with real funded accounts as prizes — 100K, 50K, and 25K prop firm accounts.",
+          "desktop": { "width": "28vw", "height": "65vh" }
+        },
+        {
+          "id": "5",
+          "src": "/images/parallax5.avif",
+          "title": "Get a personalised trading behaviour report and document your progress with like-minded creators.",
+          "desktop": { "width": "28vw", "height": "65vh" }
+        },
+        {
+          "id": "6",
+          "src": "/images/parallax6.avif",
+          "title": "Priority support, prop firm cashback, and access to every future opportunity — forever.",
+          "desktop": { "width": "28vw", "height": "65vh" }
+        }
+      ]
+    }
+  ]
+}
