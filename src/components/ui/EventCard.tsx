@@ -70,7 +70,7 @@ export default function EventCard({
           <h3
             className="
               dirtyline leading-none
-              text-[clamp(2.2rem,5vw,3rem)]
+              text-[clamp(2.2rem,5vw,3rem)] uppercase
             "
           >
             sEAsOn <span className="nohemi">{item.season}</span>

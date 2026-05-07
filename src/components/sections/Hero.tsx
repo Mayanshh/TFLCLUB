@@ -4,6 +4,13 @@ import Navbar from "@/components/ui/Navbar";
 import Button from "@/components/ui/Button";
 
 export default function Hero() {
+  const scrollToEvents = () => {
+    const element = document.getElementById("events");
+    if (element) {
+      // Lenis will automatically intercept this and make it smooth
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section
       id="hero-section"
@@ -33,8 +40,8 @@ export default function Hero() {
         </p>
 
         {/* Heading */}
-        <h1 className="dirtyline font-bold text-[#fffef1] tracking-normal leading-[0.95]
-          text-[clamp(2.5rem,6vw,6.5rem)] max-w-[95%] lg:max-w-[70vw]"
+        <h1 className="dirtyline uppercase font-black text-[#fffef1] tracking-normal leading-[0.95]
+          text-[clamp(2.5rem,6vw,6.5rem)] max-w-[95%] lg:max-w-[80vw]"
         >
           India's Most Exclusive <br className="hidden sm:block" />
           Trading Bootcamp
@@ -57,6 +64,7 @@ export default function Hero() {
             className="py-3 sm:py-4 w-48 sm:w-48 uppercase"
             variant="liquid"
             showArrow
+            onClick={scrollToEvents}
           >
             Apply For <br /> Next Season
           </Button>

@@ -1,5 +1,3 @@
-This is a comprehensive, professional README.md tailored for your TFL CLUB project. It is structured to act as both a technical manual for developers and a roadmap for backend integration.
-
 🏆 TFL CLUB | Institutional Grade Trading Experience
 TFL CLUB is a high-performance, visually immersive web platform built for an elite trading bootcamp. It combines cutting-edge frontend technologies with "Awwwards-level" aesthetics to provide a premium experience for traders seeking professional funding and mentorship.
 

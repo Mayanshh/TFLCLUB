@@ -10,7 +10,7 @@
 }
 
 .dirtyline {
-  font-family: var(--font-dirtyline);
+  font-family: var(--font-nohemi);
 }
 .nohemi {
   font-family: var(--font-nohemi);

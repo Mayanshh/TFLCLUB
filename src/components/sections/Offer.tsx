@@ -126,11 +126,11 @@ export default function EarlyBirdAwwwards() {
             </div>
             
             <h2 className="dirtyline text-[11vw] lg:text-[9vw] font-black leading-[0.8] uppercase tracking-tight text-zinc-950">
-              <div className="mt-5 lowercase">
+              <div className="mt-5 uppercase">
                 <span className="split-text block">{data.heading}</span>
               </div>
-              <div className="uppercase mt-5 tracking-wide">
-                <span className="split-text block text-zinc-300 italic">{data.highlight}</span>
+              <div className="uppercase mt-5 font-black tracking-wide">
+                <span className="split-text block text-zinc-300 ">{data.highlight}</span>
               </div>
             </h2>
           </div>

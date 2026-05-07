@@ -44,7 +44,7 @@ export default function HallOfFame() {
           Profitable Traders
         </h1>
 
-        <h1 className="text-black dirtyline leading-[0.95] tracking-tight text-[10vw] uppercase text-left">
+        <h1 className="text-black dirtyline font-bold leading-[0.95] tracking-tight text-[10vw] uppercase text-left">
           Hall OF FamE
         </h1>
       </div>

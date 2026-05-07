@@ -1,0 +1,26 @@
+[
+  {
+    "level": "Phase 01 - SEED",
+    "title": "Beginner Trader",
+    "description": "A dedicated roadmap to navigate complexity. Learn through structured execution on institutional capital.",
+    "perks": ["Personalised Roadmap", "Live 100K Account", "Daily Progress Tracker"],
+    "color": "emerald",
+    "icon": "Sprout"
+  },
+  {
+    "level": "Phase 02 - BALANCE",
+    "title": "Breakeven Trader",
+    "description": "Your strategies are sound — your environment is flawed. Predefined routines reduce overtrading.",
+    "perks": ["Psychology Reset", "Daily Routine", "Risk Management Audit"],
+    "color": "zinc",
+    "icon": "Scale"
+  },
+  {
+    "level": "Phase 03 - PEAK",
+    "title": "Profitable Trader",
+    "description": "Detox from standard execution. Connect with peers who operate at your standard and share experience.",
+    "perks": ["Premium Retreat", "Mentor Spotlight", "Global Networking"],
+    "color": "amber",
+    "icon": "Trophy"
+  }
+]

@@ -53,10 +53,10 @@ export default function Mentors({
       <div className="mt-10 px-6 md:px-12 lg:px-20 mb-16 flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="max-w-full">
           <h2 className="text-zinc-400 nohemi text-xs uppercase tracking-[0.4em] mb-4 font-light">
-            06 / Expert Mentors
+             - Expert Mentors
           </h2>
           <h3 className="mt-10 text-5xl dirtyline leading-[0.80] md:text-9xl font-medium tracking-tighter text-black">
-            learn from <br /> <span className="italic tracking-normal text-6xl md:text-[10vw] font-light uppercase">the Best.</span>
+            LEARN FROM <br /> <span className="tracking-normal text-6xl md:text-[10vw] font-light normalcase">The Best.</span>
           </h3>
         </div>
         <div className="text-right hidden md:block">

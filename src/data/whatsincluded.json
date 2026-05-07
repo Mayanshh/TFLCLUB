@@ -6,27 +6,32 @@
     {
       "id": "inc-1",
       "title": "3 Meals Daily",
-      "description": "Breakfast, lunch, and dinner throughout the bootcamp"
+      "description": "Breakfast, lunch, and dinner throughout the bootcamp",
+      "richText": "Our culinary program is designed for <b>peak cognitive performance</b>.<br/><br/><ul><li>Customized macros for traders</li><li>Organic, locally sourced ingredients</li><li>Unlimited specialty coffee & brain-fuel snacks</li></ul>"
     },
     {
       "id": "inc-2",
       "title": "Snacks & Beverages",
-      "description": "Kept fuelled between sessions"
+      "description": "Kept fuelled between sessions",
+      "richText": "Never hit a mid-session slump. We provide a curated selection of <b>nootropics and hydration</b> solutions to keep your focus sharp during high-volatility windows."
     },
     {
       "id": "inc-3",
       "title": "Shared Stay (Villa/Hotel)",
-      "description": "Premium accommodation at the destination"
+      "description": "Premium accommodation at the destination",
+      "richText": "A 5-star environment for high-level networking. You'll be staying in a <b>private luxury estate</b> equipped with high-speed fiber optics and dedicated trading floors."
     },
     {
       "id": "inc-4",
       "title": "Group Travel",
-      "description": "Transport from the pre-defined group pickup point"
+      "description": "Transport from the pre-defined group pickup point",
+      "richText": "Seamless logistics from the moment you arrive at the rendezvous point. Private shuttles and <b>concierge-managed transport</b> for all group excursions."
     },
     {
       "id": "inc-5",
       "title": "100K Tournament Account",
-      "description": "Live trading account for all participants"
+      "description": "Live trading account for all participants",
+      "richText": "The ultimate skin in the game. Each participant receives a <b>$100,000 funded account</b> to trade during the bootcamp, with real profit-sharing milestones."
     }
   ],
   "notIncluded": [

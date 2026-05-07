@@ -130,7 +130,7 @@ export default function FAQElite() {
             </span>
           </p>
           <h2 className="text-5xl dirtyline md:text-7xl font-black flex flex-col md:flex-row md:items-baseline gap-4">
-            <span className="faq-reveal lowercase block">{data.title}</span>
+            <span className="faq-reveal uppecrase block">{data.title}</span>
             <span className="faq-reveal uppercase block text-zinc-300 font-medium tracking-normal">
               {data.subtitle}
             </span>
