@@ -40,7 +40,7 @@ export default function Hero() {
         </p>
 
         {/* Heading */}
-        <h1 className="dirtyline uppercase font-black text-[#fffef1] tracking-normal leading-[0.95]
+        <h1 className="dirtyline uppercase font-black text-[#fffef1] tracking-normal leading-[0.80]
           text-[clamp(2.5rem,6vw,6.5rem)] max-w-[95%] lg:max-w-[80vw]"
         >
           India's Most Exclusive <br className="hidden sm:block" />
