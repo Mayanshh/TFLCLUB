@@ -18,7 +18,10 @@ export default function Home() {
       <About />
       <Events />      
       <Rewards />
+
+      {/* DO NOT UNCOMMENT : THIS ADD AN EXTRA 400VH BLANK SPACE AFTER REWARDS SECTION. */}
       {/* <div id="rewards_scrollable_area" className="hidden md:block h-[400svh] w-full bg-[#fffef1]"></div> */}
+      
       <WhoShouldApply />
       <HallOfFame />
       <MentorsSection />
